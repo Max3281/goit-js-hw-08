@@ -13,7 +13,7 @@ function getTime(value) {
 
 player.on('timeupdate', throttle(getTime, 1500));
 
-player.setCurrentTime(localStorage.getItem('videoplayer-current-time'));
+player.setCurrentTime(localStorage.getItem('videoplayer-current-time') || 0);
 
 // window.addEventListener('mousemove', throttle(onMouseMove, 3000));
 
