@@ -1,16 +1,16 @@
 import throttle from 'lodash.throttle';
 
 const formMarkEl = document.querySelector('.feedback-form');
-const inputMarkEl = document.querySelector('input');
-const textMarkEl = document.querySelector('textarea');
+// const inputMarkEl = document.querySelector('input');
+// const textMarkEl = document.querySelector('textarea');
 
-const formData = {};
+let formData = {};
 const STORAGE_KEY = 'feedback-form-state';
 
 loadFromStorage();
 
-inputMarkEl.addEventListener('input', throttle(onInputMark, 1000));
-textMarkEl.addEventListener('input', throttle(onTextMark, 1000));
+formMarkEl.addEventListener('input', throttle(saveOnStorage, 1000));
+// formMarkEl.addEventListener('submit', onButtonMark);
 
 function saveOnStorage(evt) {
   formData[evt.target.name] = evt.target.value;
@@ -18,26 +18,30 @@ function saveOnStorage(evt) {
   // return formData;
 }
 
-function onInputMark(evt) {
-  saveOnStorage(evt);
-  //   console.log(evt.target.value);
-}
+// function onInputMark(evt) {
+//   saveOnStorage(evt);
+//   //   console.log(evt.target.value);
+// }
 
-function onTextMark(evt) {
-  saveOnStorage(evt);
-  //   console.log(formData);
-}
+// function onTextMark(evt) {
+//   saveOnStorage(evt);
+//   //   console.log(formData);
+// }
 
 function loadFromStorage() {
-  let checkStorage = localStorage.getItem(STORAGE_KEY);
-  if (checkStorage) {
-    const checkStorage = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    Object.entries(checkStorage).forEach(([name, value]) => {
-      formData[name] = value;
-      checkStorage[name] = value;
-    });
-    inputMarkEl.value = checkStorage.email || '';
-    textMarkEl.value = checkStorage.message || '';
+  try {
+    let checkStorage = localStorage.getItem(STORAGE_KEY);
+    if (checkStorage) {
+      formData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      Object.entries(formData).forEach(([name, value]) => {
+        formMarkEl[name] = value;
+        // console.log((formMarkEl[name] = value));
+      });
+      console.log(formData);
+    }
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
   }
 }
 
